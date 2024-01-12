@@ -2,21 +2,49 @@ import React, { Component } from 'react';
 
 class Item extends Component {
   state = {
-    filterValue: 'a',
+    filterValue: 'All',
     filteredItems: this.props.products,
   };
 
-  filterItems = (value) => {
-    console.log(value)
-    if(value === 'a'){
-      return this.props.products
-    }else {
+  returnObjValue = (value)=>{
+    return Object.values(this.props.products).filter((i)=>(
+      i.tagId === parseInt(value)
+    ))
+  }
+  
+  returnObjValue = (value)=>{
       return Object.values(this.props.products).filter((i)=>(
         i.tagId === parseInt(value)
       ))
     }
+  
+  filterItems = (value) => {
+    console.log(value)
+    if(value === 'All'){
+      return this.props.products
+    }else {
 
-  }
+      switch (value) {
+        case "Gaming laptops":
+          return Object.values(this.props.products).filter((i)=>(
+            i.tagId === parseInt(0)
+          ))
+          
+        case "Gift cards":
+          return Object.values(this.props.products).filter((i)=>(
+            i.tagId === parseInt(1)
+          ))
+            
+        case "Consoles":
+          return Object.values(this.props.products).filter((i)=>(
+            i.tagId === parseInt(2)
+          ))
+              
+        default:
+            return this.props.products
+          } 
+        } 
+      }
 
   onFilterChange = (event) => {
     const targetValue = event.currentTarget.value;
@@ -45,14 +73,14 @@ class Item extends Component {
     return <div className='d-flex flex-row mb-3' >
                 <div className="sticky-top" style={{height: '100px' }}>
                 <select className="form-select" style={{marginTop: '100px'}} aria-label="Default select example" onChange={this.onFilterChange}>
-                  <option value="a" defaultValue>ALL</option>
-                  <option value="0">Gaming laptops</option>
-                  <option value="1">Gift cards</option>
-                  <option value="2">Consoles</option>
+                  <option value="All" defaultValue>ALL</option>
+                  <option value="Gaming laptops">Gaming laptops</option>
+                  <option value="Gift cards">Gift cards</option>
+                  <option value="Consoles">Consoles</option>
                 </select>
                   </div>
                 <div className="d-flex flex-wrap container my-5">
-                  <h4 className="display-1 m-4">ALL</h4>
+                  <h4 className="display-1 m-4">{this.state.filterValue}</h4>
                   <div className="d-flex flex-wrap container my-5">{listItems}</div>
                 </div>
             </div> ;
